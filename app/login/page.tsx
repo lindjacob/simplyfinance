@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
+import { revalidatePath } from "next/cache";
 
 export default function Login({
   searchParams,
@@ -12,6 +13,7 @@ export default function Login({
   const signIn = async (formData: FormData) => {
     "use server";
 
+    // TODO: validate inputs instead of type casting
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const supabase = createClient();
@@ -25,12 +27,14 @@ export default function Login({
       return redirect("/login?message=Could not authenticate user");
     }
 
-    return redirect("/protected");
+    revalidatePath("/", "layout");
+    return redirect("/");
   };
 
   const signUp = async (formData: FormData) => {
     "use server";
 
+    // TODO: validate inputs instead of type casting
     const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -39,15 +43,13 @@ export default function Login({
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: `${origin}/auth/callback`,
-      },
     });
 
     if (error) {
       return redirect("/login?message=Could not authenticate user");
     }
 
+    revalidatePath("/", "layout");
     return redirect("/login?message=Check email to continue sign in process");
   };
 
