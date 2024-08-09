@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Banner from "@/components/Banner";
 import Chart from "@/components/Chart";
 import BudgetBar from "@/components/BudgetBar";
 import InputField from "@/components/InputField";
+import Container from "@/components/layout/Container";
 
 export default function Index() {
   const [editing, setEditing] = useState(false);
@@ -24,7 +25,7 @@ export default function Index() {
   }, [editing]);
 
   return (
-    <div className="flex justify-center bg-gray-50 caret-transparent select-none">
+    <Container className="flex justify-center caret-transparent select-none">
       <Banner
         editing={editing}
         setEditing={setEditing}
@@ -33,9 +34,9 @@ export default function Index() {
       />
 
       <main className="max-w-[1500px] grid grid-cols-2 grid-rows-custom-3 gap-3 auto-cols-min mx-20 mt-10 h-screen">
-        <div className="col-span-2 flex justify-between container">
+        <div className="col-span-2 flex justify-between">
           <div>
-            <h1 className="h1">Simple Finance Planner</h1>
+            <h1 className="h1">Simply Finance</h1>
             <p className="description">
               Add your income and expenses to start planning your finances
             </p>
@@ -101,6 +102,6 @@ export default function Index() {
       </main>
 
       <footer>{/* Footer content goes here */}</footer>
-    </div>
+    </Container>
   );
 }
